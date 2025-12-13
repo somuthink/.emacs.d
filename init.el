@@ -5,9 +5,11 @@
 (setq ns-command-modifier 'meta)
 
 (setq package-archives
-      '(("gnu" . "https://elpa.gnu.org/packages/")
+      '(("melpa" . "https://melpa.org/packages/")
+        ("gnu" . "https://elpa.gnu.org/packages/")
         ("nongnu" . "https://elpa.nongnu.org/nongnu/")
-        ("melpa" . "https://melpa.org/packages/")))
+        ;; ("melpa-stable" . "https://stable.melpa.org/packages/")
+        ))
 (setq use-package-always-ensure t)
 (package-initialize)
 
@@ -18,6 +20,13 @@
   )
 
 (setq-default ring-bell-function 'ignore)
+
+(delete-selection-mode t)
+
+(setq make-backup-files nil)
+(with-eval-after-load 'dired
+  (require 'dired-x))
+(add-hook 'dired-mode-hook #'dired-hide-details-mode)
 
 (fset 'yes-or-no-p 'y-or-n-p)
 
@@ -31,14 +40,25 @@
   :init
   (load-theme 'solo-jazz t))
 
+(use-package helpful
+        :vc (:repo "Wilfred/helpful" :fetcher github))
+
+(use-package ct
+  :vc (:repo "neeasade/ct.el" :fetcher github))
+
+(use-package myron-themes
+  :vc (:repo "neeasade/myron-themes" :fetcher github))
+
 (set-face-attribute 'default nil
                       :family     "Go Mono"
-                      :height       160)
+                      :height       155)
 
 (global-set-key (kbd "C-x C-m") 'execute-extended-command)
 (global-set-key (kbd "C-x b") 'switch-to-buffer)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "C-x k") 'kill-current-buffer)
+(global-set-key (kbd "M-P") 'previous-buffer)
+(global-set-key (kbd "M-N") 'next-buffer)
 
 (global-set-key (kbd "C-c C-b") 'previous-buffer)
 (global-set-key (kbd "C-c C-f") 'next-buffer)
@@ -190,6 +210,11 @@
     :init
   (global-corfu-mode))
 
+;; (setq url-proxy-services
+;;     '(("no_proxy" . "^\\(localhost\\|10\\..*\\|192\\.168\\..*\\)")
+;;       ("http" . "127.0.0.1:1087")
+;;       ("https" . "127.0.0.1:1087")))
+
 (use-package magit)
 
 (use-package project
@@ -197,10 +222,49 @@
   (project-vc-extra-root-markers '(".project" "workspace.edn" ".dir-locals.el"))
   )
 
+(use-package dotenv
+  :ensure nil
+  :after project
+  :vc (:repo "pkulev/dotenv.el" :fetcher github)
+  :config
+  (defun dotenv-project ()
+    "Load .env file when switching projects."
+    (interactive)
+    (when-let ((project (project-current)))
+      (dotenv-update-project-env (project-root project))))
+  ;; (project-find-functions . dotenv-project)
+  )
+
+;; (use-package tabspaces
+;; ;; use this next line only if you also use straight, otherwise ignore it. 
+;; :vc (:fetcher github :repo "mclear-tools/tabspaces")
+;; :hook (after-init . tabspaces-mode) ;; use this only if you want the minor-mode loaded at startup. 
+;; :commands (tabspaces-switch-or-create-workspace
+;;            tabspaces-open-or-create-project-and-workspace)
+;; :custom
+;; (tabspaces-use-filtered-buffers-as-default t)
+;; (tabspaces-default-tab "Default")
+;; (tabspaces-remove-to-default t)
+;; (tabspaces-include-buffers '("*scratch*"))
+;; (tabspaces-initialize-project-with-todo t)
+;; (tabspaces-todo-file-name "project-todo.org")
+;; ;; sessions
+;; (tabspaces-session t)
+;; (tabspaces-session-auto-restore t)
+;; (tab-bar-new-tab-choice "*scratch*"))
+
+;; (use-package perspective
+;; :bind
+;; ("C-x C-b" . persp-list-buffers)         ; or use a nicer switcher, see below
+;; :custom
+;; (persp-mode-prefix-key (kbd "C-c M-p"))  ; pick your own prefix key here
+;; :init
+;; (persp-mode))
+
 (use-package org
 :defer t
 
-:bind ("C-c a" . org-agenda-list)
+:bind ("C-c a" . org-agenda)
 
 :config
 ;; Resize Org headings
@@ -219,23 +283,52 @@
 (plist-put org-format-latex-options :scale 2)
 
 :custom
+
 (org-hide-leading-stars t)
 (org-pretty-entities t)
 (org-startup-indented t)
 (org-startup-folded 'content)
 
+(org-agenda-files '("~/Documents/org"))
+(org-agenda-window-setup 'other-window)
+
 (org-preview-latex-default-process 'dvisvgm)
 
 )
 
+(use-package denote
+  :custom
+  (denote-directory "~/Documents/org")
+  )
+
+(use-package emms
+  :config
+  (require 'emms-setup)
+  (emms-all)
+  :custom
+  (emms-source-file-default-directory "~/Music")
+  (emms-player-list '(emms-player-mpv))
+  (emms-source-file-directory-tree-function 'emms-source-file-directory-tree-internal)
+
+  )
+
+(use-package verb
+  :bind (:map org-mode-map
+              ("C-c v" . verb-send-request-on-point)
+              )
+  )
+
+(use-package  vterm
+  :ensure t)
+
 (use-package smartparens
    :ensure t
-   :hook (prog-mode)
+   :hook (prog-mode cider-mode)
    :custom
    (sp-base-key-bindings 'sp)
    (sp-override-key-bindings
-   '(("C-t" . sp-transpose-sexp)
-     ("C-M-t" . sp-backward-transpose-sexp)
+   '(("C-M-n" . sp-transpose-sexp)
+     ("C-M-p" . sp-backward-transpose-sexp)
      ("C-k" . sp-kill-hybrid-sexp)
      ("C-c C-<right>" . sp-slurp-hybrid-sexp)
             ))
@@ -247,17 +340,57 @@
 )
 
 (use-package eglot
+  :ensure t
+  :hook ((( clojure-mode clojurec-mode clojurescript-mode java-mode)
+          . eglot-ensure))
+  ;; :preface
+  ;; (defun eglot-disable-in-cider ()
+  ;;   (when (eglot-managed-p)
+  ;;     (if (bound-and-true-p cider-mode)
+  ;;         (progn
+  ;;           (remove-hook 'completion-at-point-functions 'eglot-completion-at-point t)
+  ;;           (remove-hook 'xref-backend-functions 'eglot-xref-backend t))
+  ;;       (add-hook 'completion-at-point-functions 'eglot-completion-at-point nil t)
+  ;;       (add-hook 'xref-backend-functions 'eglot-xref-backend nil t))))
+  :custom
+  (eglot-autoshutdown t)
+  (eglot-events-buffer-size 0)
+  (eglot-extend-to-xref nil)
+  (eglot-ignored-server-capabilities
+   '(:hoverProvider
+     :documentHighlightProvider
+     :documentFormattingProvider
+     :documentRangeFormattingProvider
+     :documentOnTypeFormattingProvider
+     :colorProvider
+     :foldingRangeProvider))
+  (eglot-stay-out-of '(yasnippet)))
+
+(use-package jarchive
 :ensure t
-:hook ((( clojure-mode clojurec-mode clojurescript-mode
-          java-mode scala-mode)
-        . eglot-ensure)
-       )
-:custom
-    (eldoc-echo-area-use-multiline-p nil)
-    (eglot-autoshutdown t)
-(eglot-events-buffer-size 0)
-(eglot-extend-to-xref nil)
-)
+:after eglot
+:config
+(jarchive-setup))
 
 (use-package cider :ensure t)
-(put 'dired-find-alternate-file 'disabled nil)
+
+(defun portal.api/open ()
+  (interactive)
+  (cider-nrepl-sync-request:eval
+    "(do (ns dev)
+  (require '[portal.api :as p])
+         (def portal (p/open {:launcher :emacs}))
+         (add-tap p/submit))"))
+
+(defun portal.api/clear ()
+  (interactive)
+  (cider-nrepl-sync-request:eval "(portal.api/clear)"))
+
+(defun portal.api/close ()
+  (interactive)
+  (cider-nrepl-sync-request:eval "(portal.api/close)"))
+
+;; (with-eval-after-load 'eglot
+;;   (let ((cache (expand-file-name (md5 (project-root (project-current t)))
+;;                                  (locate-user-emacs-file "jdtls-cache"))))
+;;     (add-to-list 'eglot-server-programs `(java-mode "jdtls" "-data" ,cache))))
