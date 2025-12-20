@@ -29,7 +29,7 @@
 	(concat c space))
       42 nil nil)))
  '(package-selected-packages
-   '(denote telega eat helpfull ct ct.el myron-themes eca pyvenv vterm jarchive eglot-java htmlize a emms eglot outli verb prism doom-modeline dotenv vc-use-package))
+   '(consult-notes org-download ace-window acme-theme denote telega eat helpfull ct ct.el myron-themes eca pyvenv vterm jarchive eglot-java htmlize a emms eglot outli verb prism doom-modeline dotenv vc-use-package))
  '(package-vc-selected-packages
    '((helpfull :vc-backend Git :url "https://github.com/Wilfred/helpful")
      (ct :vc-backend Git :url "https://github.com/neeasade/ct.el")

@@ -30,6 +30,11 @@
 
 (fset 'yes-or-no-p 'y-or-n-p)
 
+;; (setq url-proxy-services
+;;     '(("no_proxy" . "^\\(localhost\\|10\\..*\\|192\\.168\\..*\\)")
+;;       ("http" . "127.0.0.1:1087")
+;;       ("https" . "127.0.0.1:1087")))
+
 (setq-default cursor-type 'bar)
     (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
     (tool-bar-mode -1)
@@ -53,15 +58,20 @@
                       :family     "Go Mono"
                       :height       155)
 
+(use-package ace-window
+  :bind
+  ("M-o" . ace-window)
+  )
+
 (global-set-key (kbd "C-x C-m") 'execute-extended-command)
 (global-set-key (kbd "C-x b") 'switch-to-buffer)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "C-x k") 'kill-current-buffer)
-(global-set-key (kbd "M-P") 'previous-buffer)
-(global-set-key (kbd "M-N") 'next-buffer)
+;; (global-set-key (kbd "M-p") 'previous-buffer)
+;; (global-set-key (kbd "M-n") 'next-buffer)
 
-(global-set-key (kbd "C-c C-b") 'previous-buffer)
-(global-set-key (kbd "C-c C-f") 'next-buffer)
+(global-set-key (kbd "M-B") 'previous-buffer)
+(global-set-key (kbd "M-F") 'next-buffer)
 
 (defun reload-init-file ()
 	 (interactive)
@@ -79,7 +89,6 @@
   (vertico-mode))
 
 (use-package savehist
-
   :init
   (savehist-mode))
 
@@ -197,7 +206,6 @@
 )
 
 (setopt tab-always-indent 'complete)
-
 (use-package corfu
     :after orderless
     :ensure t
@@ -209,11 +217,6 @@
 (corfu-auto-delay 0.0)
     :init
   (global-corfu-mode))
-
-;; (setq url-proxy-services
-;;     '(("no_proxy" . "^\\(localhost\\|10\\..*\\|192\\.168\\..*\\)")
-;;       ("http" . "127.0.0.1:1087")
-;;       ("https" . "127.0.0.1:1087")))
 
 (use-package magit)
 
@@ -235,71 +238,69 @@
   ;; (project-find-functions . dotenv-project)
   )
 
-;; (use-package tabspaces
-;; ;; use this next line only if you also use straight, otherwise ignore it. 
-;; :vc (:fetcher github :repo "mclear-tools/tabspaces")
-;; :hook (after-init . tabspaces-mode) ;; use this only if you want the minor-mode loaded at startup. 
-;; :commands (tabspaces-switch-or-create-workspace
-;;            tabspaces-open-or-create-project-and-workspace)
-;; :custom
-;; (tabspaces-use-filtered-buffers-as-default t)
-;; (tabspaces-default-tab "Default")
-;; (tabspaces-remove-to-default t)
-;; (tabspaces-include-buffers '("*scratch*"))
-;; (tabspaces-initialize-project-with-todo t)
-;; (tabspaces-todo-file-name "project-todo.org")
-;; ;; sessions
-;; (tabspaces-session t)
-;; (tabspaces-session-auto-restore t)
-;; (tab-bar-new-tab-choice "*scratch*"))
-
-;; (use-package perspective
-;; :bind
-;; ("C-x C-b" . persp-list-buffers)         ; or use a nicer switcher, see below
-;; :custom
-;; (persp-mode-prefix-key (kbd "C-c M-p"))  ; pick your own prefix key here
-;; :init
-;; (persp-mode))
-
 (use-package org
-:defer t
+  :bind ("C-c a" . org-agenda)
 
-:bind ("C-c a" . org-agenda)
+  :config
+  ;; Resize Org headings
+  (custom-set-faces
+   '(org-document-title ((t (:height 1.4))))
+   '(org-level-1          ((t (:height 1.7))))
+   '(org-level-2          ((t (:height 1.5))))
+   '(org-level-3          ((t (:height 1.25))))
+   '(org-level-4          ((t (:height 1.2))))
+   '(org-level-5          ((t (:height 1.2))))
+   '(org-level-6          ((t (:height 1.2))))
+   '(org-level-7          ((t (:height 1.2))))
+   '(org-level-8          ((t (:height 1.2))))
+   '(org-level-9          ((t (:height 1.2)))))
 
-:config
-;; Resize Org headings
-(custom-set-faces
-'(org-document-title ((t (:height 1.4))))
-'(org-level-1          ((t (:height 1.7))))
-'(org-level-2          ((t (:height 1.5))))
-'(org-level-3          ((t (:height 1.25))))
-'(org-level-4          ((t (:height 1.2))))
-'(org-level-5          ((t (:height 1.2))))
-'(org-level-6          ((t (:height 1.2))))
-'(org-level-7          ((t (:height 1.2))))
-'(org-level-8          ((t (:height 1.2))))
-'(org-level-9          ((t (:height 1.2)))))
+  (plist-put org-format-latex-options :scale 2)
 
-(plist-put org-format-latex-options :scale 2)
+  :custom
+  (org-agenda-files '("~/Documents/org"))
+  (org-agenda-window-setup 'other-window)
+  (org-hide-leading-stars t)
+  (org-pretty-entities t)
+  (org-startup-indented t)
+  (org-startup-folded 'content)
 
-:custom
+  (org-preview-latex-default-process 'dvisvgm)
+  (org-image-actual-width 500))
 
-(org-hide-leading-stars t)
-(org-pretty-entities t)
-(org-startup-indented t)
-(org-startup-folded 'content)
+(use-package org-download
+  :init
+  (require 'org-download)
+  :custom
+  (org-download-method 'attach))
 
-(org-agenda-files '("~/Documents/org"))
-(org-agenda-window-setup 'other-window)
-
-(org-preview-latex-default-process 'dvisvgm)
-
-)
+(use-package verb
+  :bind (:map org-mode-map
+              ("C-c v" . verb-send-request-on-point)
+              )
+  )
 
 (use-package denote
+  :hook (dired-mode . denote-dired-mode)
+  :bind
+  (("C-c n n" . denote)
+   ("C-c n r" . denote-rename-file)
+   ("C-c n l" . denote-link)
+   ("C-c n b" . denote-backlinks)
+   ("C-c n d" . denote-dired)
+   ("C-c n g" . denote-grep))
+  :config
+  (denote-rename-buffer-mode 1)
   :custom
   (denote-directory "~/Documents/org")
   )
+
+(use-package consult-notes
+  :bind 
+
+  :config
+  (consult-notes-org-headings-mode)
+  (consult-notes-denote-mode))
 
 (use-package emms
   :config
@@ -310,12 +311,6 @@
   (emms-player-list '(emms-player-mpv))
   (emms-source-file-directory-tree-function 'emms-source-file-directory-tree-internal)
 
-  )
-
-(use-package verb
-  :bind (:map org-mode-map
-              ("C-c v" . verb-send-request-on-point)
-              )
   )
 
 (use-package  vterm
@@ -331,7 +326,9 @@
      ("C-M-p" . sp-backward-transpose-sexp)
      ("C-k" . sp-kill-hybrid-sexp)
      ("C-c C-<right>" . sp-slurp-hybrid-sexp)
-            ))
+     ("M-F" . nil)
+     ("M-B" . nil)
+     ))
    :config
    (defun sp-backward-transpose-sexp ()
      (interactive)
