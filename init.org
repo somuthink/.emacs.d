@@ -2,7 +2,36 @@
 #+author: somuthink
 #+PROPERTY: header-args :tangle init.el
 
-Generally Not Used, Except by Middle-Aged Computer Scientists
+=G= enerally =N= ot =U= sed, =E= xcept by =M= iddle- =A= ged =C= omputer =S= cientists
+
+#+BEGIN_SRC shell :tangle nil
+	      e	eeeaeemm																       mmea    
+	     e	 e ac mee	e								e			ee				     e	see    
+	    eeme mesesm	e      ee e		     e					   e e			      mmmmme				       eaama   
+	 e    acassmmma	      emeee m		     m	e				    eeea e		    e emm me				       esee    
+	    mmseaeemeae	       ecs a e m	   e e e	    e			  eeecss ee		    me csc				      ecsaee   
+	 e  meeae a e e	      e	es emm ee	  emamaee	   meaem		    ssssce		 e   eccssmm				      ecma m   
+	 me eeaee e	      e	asass ce me	  masse		   emsm	m		eeaemsme		 e ac es acee				      eacee    
+	 eee e		      eaecseeeaemm m	  ammssmm	  eeassee		   seecmm		  e e ameamm				       aecm    
+	eeesee		      e	 saaaam	caeeee eemecssaa	    mseame		m m eme			 eecmase e				   e me	 m e   
+	  aaeec			sama   mmem e  eee sacc	e	   meemem		asee m			e m ea e      e				    eeasm e  eee
+	 emsssame		mmcee  e  s  cesmsmeccm		     cece		  ee			    mee	m ee			    eeme  e maeam e e  
+	eeassss	ee	       easem	 m emmmame  e ee	  eeecmc	       e me e			   ee eese   m			       eemsee  semem  ec  e
+      em acacssm	     ema me e	      ee  eee  e	  e  eeeeem		 e			    me	 e mam ee		      es   ee assmeee eeeee
+       eescmsamem	       asm ee	      e	     ee	e	ee  aeae se	       e m e				    emameee		    eseme    e em      	ee
+       e mcmsm ae	       mcsce		      c	me	 eaae	eemae	       eeemee				  e memeeeee		  eememmm  ee msceeee e
+       emammem			ma e		     ee	 e   ees c meammc maeee		 ee e	 e e			      eaam		     sem      es       
+     eeecemmm	  e	      m	seae		      emea    aessaseam	me c e		m s e  me  ee e			   ee eaeee		    eea	me escccc      
+      em eaee e	ee	      mmcsem		     emce    esam cea mamm em  me      m   emsmme msee		       e      emme	    e	   eemaa eeesecme      
+      e	e eeseeemem e	      mmacce			a     easem	me  m eae	e  e m mceee		      e	  c ememaa	  e e	   eaemsamemaacs e     
+	eee ee m  ea e	     eemssme		       ma    eem ee e	  eamessme	  e  e m  e  e		    m e	e e  eeame e	 ee ee	       eacmmassa e     
+	  e	emeeee	     mascmme		     eeee e  m eaee	  e ee		       e		      ma m   s em	ee see	    ee	  m amamem     
+	    e	 m	    e masm e		      m	     e	 e	    em ee					  se me	ee	m essme		  a   e	 e     
+	      m	ee	    eeemsem		       ee      ee	     m e				     m e ee  e		 e me e		   ee e	       
+			     eammee										       em   e		   e e			       
+			      eaee													     e			       
+
+#+END_SRC
 
 * Core
 ** Initialization
