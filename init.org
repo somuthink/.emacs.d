@@ -34,7 +34,9 @@
 #+END_SRC
 
 * Core
+
 ** Initialization
+
 #+BEGIN_SRC emacs-lisp
   ;; Load custom settings separately
   (setq custom-file (locate-user-emacs-file "custom.el"))
@@ -45,6 +47,7 @@
 #+END_SRC
 
 ** Package Management
+
 #+BEGIN_SRC emacs-lisp
   ;; Package archives
   (setq package-archives
@@ -57,6 +60,7 @@
 #+END_SRC
 
 ** Essentials
+
 #+BEGIN_SRC emacs-lisp
   ;; Disable distractions
   (setq-default ring-bell-function 'ignore)
@@ -73,8 +77,11 @@
     :init (exec-path-from-shell-initialize))
 #+END_SRC
 
+
 * UI
+
 ** Nano Ecosystem
+
 #+BEGIN_SRC emacs-lisp
   ;; Load nano from local source
   (add-to-list 'load-path (expand-file-name "~/.config/nano-emacs"))
@@ -104,15 +111,18 @@
 #+END_SRC
 
 ** Visual Refinements
+
 #+BEGIN_SRC emacs-lisp
 
   (use-package ace-window
     :bind ("M-o" . ace-window))
-  
+
   (setq-default cursor-type 'bar)
   (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
+
+
 #+END_SRC
 
 ** COMMENT Retro
@@ -125,7 +135,11 @@
                       :family     "Go Mono"
                       :height       155)
 #+END_SRC
+
+
+
 * Completion & Navigation
+
 ** Vertico Ecosystem
 
 #+BEGIN_SRC emacs-lisp
@@ -229,7 +243,9 @@
     :init (global-corfu-mode))
 #+END_SRC
 
+
 * Productivity
+
 ** Note-taking & Organization
 
 #+BEGIN_SRC emacs-lisp
@@ -272,8 +288,11 @@
     (project-vc-extra-root-markers '(".project" ".dir-locals.el")))
 #+END_SRC
 
+
 * Programming
+
 ** Development Environment
+
 #+BEGIN_SRC emacs-lisp
   (use-package eglot
     :hook ((clojure-mode . eglot-ensure)
@@ -313,6 +332,7 @@
     :commands vterm)
 #+END_SRC
 
+
 * Global Bindings
 
 #+BEGIN_SRC emacs-lisp
@@ -330,7 +350,9 @@
   (global-set-key (kbd "C-c C-r") 'reload-init-file)
 #+END_SRC
 
+
 * Face Customizations
+
 #+BEGIN_SRC emacs-lisp
   ;; Org mode headings
   (set-face-attribute 'org-document-title nil :height 1.4)
@@ -349,6 +371,7 @@
                       :foreground "#673AB7"
                       :box '(:line-width (-1 . -1) :color "grey80"))
 #+END_SRC
+
 
 * COMMENT Local Variables
 ;; Local Variables: 
